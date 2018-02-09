@@ -55,9 +55,10 @@ var PLATFORM = {
 function updateStringsXml(contents) {
     var json = JSON.parse(contents);
     var strings = fs.readFileSync(PLATFORM.ANDROID.stringsXml).toString();
-
+    
+    // needs changed to work with cordova CLI
     // strip non-default value
-    strings = strings.replace(new RegExp('<string name="google_app_id">([^\@<]+?)</string>', 'i'), '');
+    /*strings = strings.replace(new RegExp('<string name="google_app_id">([^\@<]+?)</string>', 'i'), '');
 
     // strip non-default value
     strings = strings.replace(new RegExp('<string name="google_api_key">([^\@<]+?)</string>', 'i'), '');
@@ -70,7 +71,19 @@ function updateStringsXml(contents) {
 
     // replace the default value
     strings = strings.replace(new RegExp('<string name="google_api_key">([^<]+?)</string>', 'i'), '<string name="google_api_key">' + json.client[0].api_key[0].current_key + '</string>');
-
+    */
+    
+    // strip empty lines
+    strings = strings.replace(new RegExp('(\r\n|\n|\r)[ \t]*(\r\n|\n|\r)', 'gm'), '$1');
+   
+    // setting duplicate strings causes a build error
+    if (~strings.indexOf('google_app_id')) {
+      return;
+    }
+    
+    // set the values from google-services.json
+    strings = strings.replace('</resources>', '<string name="google_app_id">' + json.client[0].client_info.mobilesdk_app_id + '</string><string name="google_api_key">' + json.client[0].api_key[0].current_key + '</string></resources>');
+    
     fs.writeFileSync(PLATFORM.ANDROID.stringsXml, strings);
 }
 
@@ -80,8 +93,9 @@ function copyKey(platform, callback) {
         if (fileExists(file)) {
             try {
                 var contents = fs.readFileSync(file).toString();
-
-                try {
+                
+                // File is already copied by plugin.xml
+                /*try {
                     platform.dest.forEach(function (destinationPath) {
                         var folder = destinationPath.substring(0, destinationPath.lastIndexOf('/'));
                         fs.ensureDirSync(folder);
@@ -89,7 +103,7 @@ function copyKey(platform, callback) {
                     });
                 } catch (e) {
                     // skip
-                }
+                }*/
 
                 callback && callback(contents);
             } catch (err) {
