@@ -44,8 +44,6 @@ xmlns:android="http://schemas.android.com/apk/res/android">
 			</service>
 			<receiver android:name="org.apache.cordova.firebase.OnNotificationOpenReceiver"></receiver>
 		</config-file>
-		<source-file src="src/android/google-services.json" target-dir="." />
-		<resource-file src="src/android/google-services.json" target="."/>
 		<resource-file src="src/android/cordova-plugin-firebase-strings.xml" target="res/values/cordova-plugin-firebase-strings.xml" />
 		<source-file src="src/android/FirebasePlugin.java" target-dir="src/org/apache/cordova/firebase" />
 		<source-file src="src/android/OnNotificationOpenReceiver.java" target-dir="src/org/apache/cordova/firebase" />
@@ -56,7 +54,6 @@ xmlns:android="http://schemas.android.com/apk/res/android">
 		<source-file src="src/android/colors.xml" target-dir="res/values" />
 
 		<framework src="src/android/build.gradle" custom="true" type="gradleReference" />
-		<framework src="com.google.gms:google-services:+" />
 		<framework src="com.google.android.gms:play-services-tagmanager:16.0.4" />
 		<framework src="com.google.firebase:firebase-core:16.0.4" />
 		<framework src="com.google.firebase:firebase-messaging:17.3.4" />
@@ -85,8 +82,6 @@ xmlns:android="http://schemas.android.com/apk/res/android">
 			<string>production</string>
 		</config-file>
 		
-		<resource-file src="src/ios/GoogleService-Info.plist" />
-
 		<header-file src="src/ios/AppDelegate+FirebasePlugin.h" />
 		<source-file src="src/ios/AppDelegate+FirebasePlugin.m" />
 		<header-file src="src/ios/FirebasePlugin.h" />
